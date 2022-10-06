@@ -18,6 +18,9 @@
 
 **https://www.kernel.org/pub/linux/kernel/projects/rt/4.14/older/patch-4.14.12-rt10.patch.sign**
 
+清华源路经
+'https://mirrors.tuna.tsinghua.edu.cn/kernel/v5.x/'
+
 可以**用`uname -r`查看操作系统发行编号。`uname -a`显示更多信息**
 
 注意事项：补丁只对特定的版本存在，故可能无法完全匹配你的内核版本，但建议下载的版本和你的系统内核版本最接近
