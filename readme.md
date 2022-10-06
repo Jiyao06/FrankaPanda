@@ -21,7 +21,7 @@
 
 **https://www.kernel.org/pub/linux/kernel/projects/rt/4.14/older/patch-4.14.12-rt10.patch.sign**
 
-**NOTE**: 如果下载过慢，可以从清华源下载，根目录在**https://mirror.tuna.tsinghua.edu.cn/kernel/**，后续目录与上面保持一致
+**NOTE**: 如果下载过慢，可以从清华源下载，根目录在 **https://mirror.tuna.tsinghua.edu.cn/kernel/** 后续目录与上面保持一致
 
 
 可以**用`uname -r`查看操作系统发行编号。`uname -a`显示更多信息**
