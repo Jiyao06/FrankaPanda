@@ -1,8 +1,14 @@
-# 2 安装实时内核
+**Note**: All sentences starting with **Note** are added by Derick Chen.
 
-## 2.1 下载、解压和验证
+[TOC]
 
-### 2.1.1 下载
+
+
+# 1 安装实时内核
+
+## 1.1 下载、解压和验证
+
+### 1.1.1 下载
 
 **去www.kernel.org/pub/linux/kernel里面找url并下载**
 
@@ -18,8 +24,8 @@
 
 **https://www.kernel.org/pub/linux/kernel/projects/rt/4.14/older/patch-4.14.12-rt10.patch.sign**
 
-清华源路经
-'https://mirrors.tuna.tsinghua.edu.cn/kernel/v5.x/'
+如果下载过慢，可以从清华源下载
+
 
 可以**用`uname -r`查看操作系统发行编号。`uname -a`显示更多信息**
 
@@ -27,7 +33,9 @@
 
 *这里的版本号中2比10更接近1（按数字大小，而不是字典序）*
 
-### 2.1.2 解压与校验
+**Note**: if you find it slow to download, try https://mirror.bjtu.edu.cn/kernel/linux/kernel/v5.x/
+
+### 1.1.2 解压与校验
 
 先解压.xz。在刚刚下载到的目录打开终端，执行命令
 
@@ -53,6 +61,16 @@
 
 位数可能也要更多
 
+**Note**: I successfully accessed the public using the following command:
+
+```bash
+$ gpg2 --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0x<the whole id>
+gpg: key xxxxxxxxxxxxxxxx: 1 duplicate signature removed
+gpg: key xxxxxxxxxxxxxxxx: public key "Greg Kroah-Hartman <gregkh@linuxfoundation.org>" imported
+gpg: Total number processed: 1
+gpg:               imported: 1
+```
+
 
 
 再次尝试校验
@@ -73,9 +91,9 @@
 
 `tar xf linux-4.14.12.tar`
 
-## 2.2 打包安装
+## 1.2 打包安装
 
-### 2.2.1 设置config
+### 1.2.1 设置config
 
 `cd linux-4.14.12`
 
@@ -99,11 +117,39 @@
 
 现在手动调整.config
 
-`sudo apt-get install build-essential libncurses-dev bison flex libssl-dev libelf-dev`
+`sudo apt-get install build-essential libncurses-dev bison flex libssl-dev libelf-dev zstd dwarves`
 
 安装必要的包
 
 `make menuconfig`
+
+**Note**: when I executed `make menuconfig`, I got
+
+```bash
+$ make menuconfig
+  HOSTCC  scripts/kconfig/lxdialog/util.o
+  HOSTCC  scripts/kconfig/lxdialog/yesno.o
+  HOSTCC  scripts/kconfig/confdata.o
+  HOSTCC  scripts/kconfig/expr.o
+  LEX     scripts/kconfig/lexer.lex.c
+  YACC    scripts/kconfig/parser.tab.[ch]
+  HOSTCC  scripts/kconfig/lexer.lex.o
+  HOSTCC  scripts/kconfig/menu.o
+  HOSTCC  scripts/kconfig/parser.tab.o
+  HOSTCC  scripts/kconfig/preprocess.o
+  HOSTCC  scripts/kconfig/symbol.o
+  HOSTCC  scripts/kconfig/util.o
+  HOSTLD  scripts/kconfig/mconf
+.config:8758:warning: symbol value 'm' invalid for ASHMEM
+.config:9810:warning: symbol value 'm' invalid for ANDROID_BINDER_IPC
+.config:9811:warning: symbol value 'm' invalid for ANDROID_BINDERFS
+Your display is too small to run Menuconfig!
+It must be at least 19 lines by 80 columns.
+make[1]: *** [scripts/kconfig/Makefile:48: menuconfig] Error 1
+make: *** [Makefile:624: menuconfig] Error 2
+```
+
+So, I just maximize the window size of my terminal.
 
 然后在弹出界面中上下左右和回车操作，找到General Step->preemption model，改成fully使得实时性最强
 
@@ -111,13 +157,37 @@
 
 
 
-### 2.2.2 打包安装
+### 1.2.2 打包安装
 
 `sudo make -j4 deb-pkg`
 
+**Note**: I have got several errors:
+
+- `dpkg-source: error: unrepresentable changes to source`;
+
+- `dpkg-source: error: cannot represent change to vmlinux-gdb.py: new version is symlink to /home/cdm/Downloads/linux-5.13.19/scripts/gdb/vmlinux-gdb.py old version is nonexistent`;
+
+  *solution*: `rm vmlinux-gdb.py`
+
+- `make[1]: *** No rule to make target 'debian/canonical-revoked-certs.pem', needed by 'certs/x509_revocation_list'.  Stop.` 
+
+  *solution*: `scripts/config --disable SYSTEM_REVOCATION_KEYS`;
+
+- `BTF: .tmp_vmlinux.btf: pahole (pahole) is not available
+  Failed to generate BTF for vmlinux
+  Try to disable CONFIG_DEBUG_INFO_BTF`
+  
+  *solution*: `sudo apt-get install dwarves`;
+
+- `/debian/xxxx`
+  
+  *solution*: `sudo vim .config`，搜索debian，把“”里面的都删除，然后再进行编译（重复上述步骤）
+
+**NOTE**: If you find the kernel is too large, you can remove `CONFIG_DEBUG_INFO=y` in `.config`.
+
 `sudo dpkg -i ../linux-headers-4.14.12-rt10_*.deb ../linux-image-4.14.12-rt10_*.deb`
 
-### 2.2.3 验证安装效果
+### 1.2.3 验证安装效果
 
 重启，`uname -a`看到字符串`PREEMPT RT`
 
@@ -146,6 +216,10 @@
 因为某厂垄断已久，态度恶劣，闭源驱动问题很多，兼容性很烂
 
 而且它官网推荐也不上心，官网推荐的驱动用了重启会黑屏，但Ubuntu推荐的不会。*要用Ubuntu推荐的*
+
+**NOTE**: I get several errors when installing the NVIDIA driver:
+
+- 
 
 （顺便一提，它官网cuDNN教程也有坑。害，毕竟人家主要用户是游戏玩家）
 
@@ -440,6 +514,8 @@ pytorch编译和跑可以用两个（看文章）
 ## 6.2 最后两个命令
 
 网速慢的时候，最后两个命令很难成功
+
+**NOTE**: I found the network very good in the libarary of PKU. I finished these two command only in a few seconds.
 
 ### 6.2.1 确保代理正常
 
@@ -1807,3 +1883,4 @@ https://www.cnblogs.com/hazir/p/linux_make_examples.html
 http://wiki.ros.org/catkin/commands/catkin_make
 
 注意白名单
+
