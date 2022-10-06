@@ -1,7 +1,4 @@
-**Note**: All sentences starting with **Note** are added by Derick Chen.
-
-[TOC]
-
+**Note**: All sentences starting with **Note** are added by Derick Chen and Jiyao Zhang.
 
 
 # 1 安装实时内核
