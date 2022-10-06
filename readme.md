@@ -21,7 +21,7 @@
 
 **https://www.kernel.org/pub/linux/kernel/projects/rt/4.14/older/patch-4.14.12-rt10.patch.sign**
 
-如果下载过慢，可以从清华源下载
+**NOTE**: 如果下载过慢，可以从清华源下载，根目录在**https://mirror.tuna.tsinghua.edu.cn/kernel/**，后续目录与上面保持一致
 
 
 可以**用`uname -r`查看操作系统发行编号。`uname -a`显示更多信息**
@@ -207,6 +207,8 @@ So, I just maximize the window size of my terminal.
 所以一般认为还是同一个系统（）
 
 # 2 安装显卡驱动
+
+**Note**: 可以参考 **https://blog.csdn.net/weixin_39275295/article/details/119173247** 实现
 
 一重装好系统，马上就要安装显卡驱动，并重启确认不会导致黑屏再进行其它动作，*免得心血白费*
 
