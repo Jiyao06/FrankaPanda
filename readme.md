@@ -1,4 +1,4 @@
-**Note**: All sentences starting with **Note** are added by Derick Chen and Jiyao Zhang.
+**Note**: The original document is created by Yourong Zhang and all sentences starting with **Note** are added by Derick Chen and Jiyao Zhang.
 
 
 # 1 安装实时内核
