@@ -670,9 +670,15 @@ Possible errors:
    The traceback for the exception was written to the log file
    ```
 
-   *Solution*: `source <path to catkin_ws>/devel/setup.sh`
+   *Solution*: `source <path to catkin_ws>/devel/setup.sh` [Sometimes not work.]
+   Try:
+   ```bash
+   cd <path to catkin_ws>/
+   catkin_make
+   source devel/setup.bash
+   ```
 
-2. ```bash
+3. ```bash
    xacro: error: expected exactly one input file as argument
    RLException: Invalid <param> tag: Cannot load command parameter [robot_description]: command [['/opt/ros/noetic/lib/xacro/xacro', '--inorder', '/home/cdm/Documents/Undergraduate', 'Research/Model_based_robot/catkin_ws/src/franka_ros/franka_description/robots/panda_arm.urdf.xacro', 'hand:=true']] returned with code [2]. 
    
@@ -684,7 +690,7 @@ Possible errors:
 
    *Solution*: delete the whitespace and reinstall `franka-ros`.
 
-3. ```bash
+4. ```bash
    process[joint_state_publisher-4]: started with pid [23397]
    ERROR: cannot launch node of type [robot_state_publisher/state_publisher]: Cannot locate node of type [state_publisher] in package [robot_state_publisher]. Make sure file exists in package path and permission is set to executable (chmod +x)
    ```
