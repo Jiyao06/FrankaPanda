@@ -670,13 +670,7 @@ Possible errors:
    The traceback for the exception was written to the log file
    ```
 
-   *Solution*: `source <path to catkin_ws>/devel/setup.sh` [Sometimes not work.]
-   Try:
-   ```bash
-   cd <path to catkin_ws>/
-   catkin_make
-   source devel/setup.bash
-   ```
+   *Solution*: `source <path to catkin_ws>/devel/setup.sh` , and run in the same terminal.
 
 3. ```bash
    xacro: error: expected exactly one input file as argument
