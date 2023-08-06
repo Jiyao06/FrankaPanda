@@ -817,6 +817,24 @@ $ rospack list | grep realsense
 realsense2_camera /opt/ros/noetic/share/realsense2_camera
 realsense2_description /opt/ros/noetic/share/realsense2_description
 ```
+If `realsense-ros` is not installed:
+Install realsense SDK:
+```bash
+$ git clone https://github.com/IntelRealSense/librealsense.git
+$ cd librealsense
+$ sudo apt-get install libudev-dev pkg-config libgtk-3-dev
+$ sudo apt-get install libusb-1.0-0-dev pkg-config
+$ sudo apt-get install libglfw3-dev
+$ sudo apt-get install libssl-dev
+
+$ sudo cp config/99-realsense-libusb.rules /etc/udev/rules.d/
+$ sudo udevadm control --reload-rules && udevadm trigger 
+$ mkdir build
+$ cd build
+$ cmake ../ -DBUILD_EXAMPLES=true
+$ make
+$ sudo make install
+```
 
 Also you should check whether your camera can launch:
 
